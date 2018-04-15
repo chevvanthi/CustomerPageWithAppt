@@ -140,4 +140,153 @@
 	color: red;
     display: block;
     text-align: center;
+}#contactFormWrapper{
+	position: absolute;
+    left: 34%;
+    top: 12%;
+    height: 78%;
+ 
+    width: 45%;
+}.contactForm{
+	position: relative;
+    left: 4%;
+    height: 101%;
+    width: 102%;
+}#saveCustomerButton{
+	position: absolute;
+    top: 82%;
+    left: 7%;
+    height: 13%;
+    width: 86%;
+    background: dodgerblue;
+    padding: 5px;
+    color: white;
+    box-shadow: gray;
+    font-size: 100%;
+}#customerCompanyDiv{
+	position: absolute;
+    top: 68%;
+    
+}#customerAddressDiv{
+	position: absolute;
+    top: 55%;
+}#customerMobileDiv{
+	position: absolute;
+    top: 35%;
+}#EmailContainer{
+    position: relative;
+    top: 26%;
+    width: 81%;
+}#customerNameDiv{
+	position:absolute;
+	top:11%;
+}.fieldHolder{
+	padding: 4%;
+    height: 22%;
+    width: 81%;
+}.inputfields{
+	position: relative;
+    left: 30%;
+    width: 65%;
+    height: 41%;
+    font-size: inherit;
+}#customerAddress{
+	 left: 32%;
+	
+}#MobileLabel{
+	position: absolute;
+    top: 62%;
+    left: 4%;
+}#customerMobile{
+	width: 65%;
+    height: 40%;
+    top: 53%;
+    left: 33%;
+}#customerEmail{
+	position: absolute;
+    height: 26%;
+/*     top: 45%;
+    left: 44%;
+ */    width: 60%;
+}#EmailLabel{
+	position: absolute;
+    top: 55%;
+    left: 4%;
+}#customerName{
+	 left: 34%;
+}#customerFormHeader{
+    padding: 4%;
+    top: -4%;
+    position: absolute;
+}#addCustomer{
+	width: 15%;
+    position: absolute;
+    top: 5%;
+    left:4%;
+   	background: dodgerblue;
+    
+}.close{
+	position: absolute;
+    left: 160%;
+    top: 34%;
+    height: 41%;
+    width: 18%;
+    color: black;
+    font-size: 40px;
+    border-radius: 29%;
+    background: lightgray;
+
+}.plus{
+	
+   block-size: initial;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    width: 4%;
+    height: 16%;
+    text-align: center;
+}.minus{
+	
+    block-size: initial;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    width: 4%;
+    height: 16%;
+    text-align: center;
+}#emailPlus{
+	position: absolute;
+    left: 105%;
+    top: 43%;
+}#emailMinus{
+	position:absolute;
+	left: 105%;
+    top: 59%;
+}#MobilePlus{
+	position: absolute;
+    top: 50%;
+    left: 105%;
+}#mobileMinus{
+	position: absolute;
+    top: 66%;
+    left: 105%;
+}#customerEmailDiv{
+	position: absolute;
+    top: 48%;
+}#primaryEmail{
+	position: absolute;
+    height: 100%;
+    width: 300px;
+    left: 185px;
+    top: 50%;
+}#primaryPlus{
+	position: absolute;
+    left: 500px;
+    width: 20px;
+}#primaryMinus{
+	width: 48%;
+    left: 500px;
+    top: 32px;
 }

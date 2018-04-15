@@ -65,8 +65,6 @@
     <script src="./model/userCredentialsModel.js"></script>
 
     <script src="./main.js"></script>
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-
    <link rel = "stylesheet" type="text/css" href = "/design.css" /> 
 
 </body>

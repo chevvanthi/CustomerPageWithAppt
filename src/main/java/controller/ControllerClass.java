@@ -5,14 +5,10 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +25,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import controller.CustomerCredentials;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
@@ -222,17 +222,20 @@ public String googleAuthLogin(HttpServletRequest request) throws IOException, JS
 				
 				"https://www.googleapis.com/oauth2/v3/token?"
 				+ "client_id=1003766481966-663412bo2mh0nl9ijnifepet0p5gcaef.apps.googleusercontent.com"
-				+ "&client_secret=PSFzZQB7u5EuCOrAt16hmerW" 
-				+ "&redirect_uri=https://chevvanthi-146907.appspot.com/googleAuth"
-				+ "&grant_type=authorization_code" 
-				+ "&code=" + auth_code);
+				+ "&client_secret=PSFzZQB7u5EuCOrAt16hmerW&" 
+				+ "redirect_uri=https://chevvanthi-146907.appspot.com/googleAuth&"
+				+ "grant_type=authorization_code&" 
+				+ "code=" + auth_code);
 		
 		
 		
 		System.out.println("aFter"); 
 		
 		
-		HttpURLConnection connection =  (HttpURLConnection) url.openConnection();	
+		HttpURLConnection connection =  (HttpURLConnection) url.openConnection();
+		
+		connection.setRequestMethod("POST");
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
 		connection.setDoOutput(true);
 		
@@ -286,27 +289,65 @@ public String googleAuthLogin(HttpServletRequest request) throws IOException, JS
 
 		 String emailId = (String)json_user_details.get("email");
 		System.out.println("user email address " + emailId);
-		
-		// code for sending accessed user details to display.jsp
-//		HttpSession session=req.getSession();
-//        session.setAttribute("email",(String) json_user_details.get("email"));
-//        // Get session creation time.
-//        Date createTime = new Date(session.getCreationTime());
-//        // Get last access time of this web page.
-//        Date lastAccessTime = new Date(session.getLastAccessedTime());
-//        session.setAttribute("email",(String) json_user_details.get("email"));
-//		String userEmail = null;
-//		String userName = null;
-//		try {
-//			userEmail = (String) json_user_details.get("email");
-//			userName = (String) json_user_details.get("name");
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	
 	
 	return "";
 	
+}
+@RequestMapping(value="/saveCustomerDetails")
+@ResponseBody
+public String storeCustomers(@RequestBody String customerDetails,HttpServletRequest request ) throws JSONException, JsonParseException, JsonMappingException, IOException{
+	
+	
+		System.out.println("store customer " + customerDetails);
+		customerDetailsPOJO customerDetail	 =   new customerDetailsPOJO();
+		ObjectMapper objMap  		  	 =   new ObjectMapper();
+		String result		 		   	 =   null;
+		HashMap<String,String> map 	   	 =   new HashMap<>();
+		HashMap<String,String> hashmap 	 =   new HashMap<>();
+		JSONObject json 			     =   new JSONObject(customerDetails);
+		HttpSession session 			 =  request.getSession(false);
+
+		String customerName		    	=  json.getString("customerName");
+		String customerAddress			=  json.getString("customerAddress");
+		String customerCompany			=  json.getString("customerCompany");
+		String customerEmail			=  json.getString("customerEmail");
+		String customerMobile			=  json.getString("customerMobile");
+		String randomId 				=  json.getString("randomId");
+		String adminId					=  json.getString("adminId");
+		
+		
+		ObjectifyService.register(customerDetailsPOJO.class);
+		customerDetail.setCustomerName(customerName);
+		customerDetail.setCustomerAddress(customerAddress);
+		customerDetail.setCustomerCompany(customerCompany);
+		customerDetail.setCustomerEmail(customerEmail);
+		customerDetail.setCustomerMobile(customerMobile);
+		customerDetail.setAdminId(adminId);
+		customerDetail.setRandomId(randomId);
+		
+		ofy().save().entity(customerDetail).now();
+		map.put("status", "saved");
+		result = objMap.writeValueAsString(map);
+		return result;
+}
+
+@RequestMapping(value="/deleteCustomer/{randomId:.+}")
+@ResponseBody
+public String deleteCustomer(@PathVariable String randomId,HttpServletRequest request){
+	System.out.println("insode the delete cusromer " + randomId);
+	
+	
+	ObjectMapper objMap  		  	 =   new ObjectMapper();
+	String result		 		   	 =   null;
+	HashMap<String,Object> map 	   	 =   new HashMap<>();
+	HttpSession session 			 =  request.getSession(false);
+
+
+	ObjectifyService.register(customerDetailsPOJO.class);
+	ofy().delete().type(customerDetailsPOJO.class).id(randomId);    // asynchronous
+
+	return "deleted";
 }
 
 
