@@ -1,0 +1,324 @@
+.background_fade{
+	opacity : 0.10;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 51%;
+    position: absolute;
+    transition: all 5s ease-in-out;
+    top: 9%;
+    left: 10%;
+   
+}
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+.close{
+	position: relative;
+    left: -4%;
+    bottom: 23px;
+    color: black;
+}#customerFormHeader{
+    padding-bottom: 0px;
+}#customerPageContainer{
+	position: absolute;
+    top: 15%;
+    left: 5%;
+}#customerNamesContainer{
+	    position: absolute;
+    top: 99px;
+}.nameShow_ul{
+	    list-style-type: none;
+	    width: 200%;
+    height: 47px;
+    position: relative;
+    left: -37px;
+	
+}#addCustomer{
+    background-color: #777;
+	position: absolute;
+    left: 25%;
+    top: 26%;
+    border: none;
+	
+}#deleteCustomer{
+	position: absolute;
+    left: 223px;
+    height: 22px;
+    top: 1%;
+    font-size: 20px;
+}#customerName-li{
+   
+    width: 200%;
+    height: 47px;
+    font-size: 20px;
+    cursor: pointer;
+    
+}#customerDetailsContainer{
+	position: relative;
+    left: 350px;
+    top: 41px;
+    width: 538px;
+    
+    
+}.designButton{
+	
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+    width: 38%;
+    background: dodgerblue;
+}#updateCustomerbutton{
+	position: relative;
+    left: 2%;
+    top: 106px;
+}
+#deleteCustomerButton{
+	position: relative;
+    left: 6%;
+    top: 106px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+    width: 38%;
+    background: red;
+}#saveCustomerButton{
+	position: relative;
+    left: -200px;
+	
+}#customTemplateContainer{
+	position: relative;
+    width: 26%;
+    left: 42%;
+}#header{
+	    background: #ccc;
+    position: absolute;
+    top: 1px;
+    height: 12%;
+    width: 100%;
+    left: 1px;
+}#name{
+	position: absolute;
+    top: 37%;
+    left: 10%;
+    font-size: x-large;
+    font-family: fantasy;
+    color: white;
+}#image{
+	position: absolute;
+    height: 99%;
+}#nameHeader{
+	position: relative;
+    top: -49px;
+    color: dodgerblue;
+}.inputfields{
+	position: relative;
+    left: 22%;
+    width: 31%;
+    font-size: inherit;
+}.modal-body {
+    position: relative;
+    padding: 32px;
+}#primaryEmail{
+	    left: 4%;
+	
+}.lable{
+	    position: relative;
+    left: 3%;
+}#primaryPlus{
+	position: absolute;
+    left: 67%;
+}#primaryMobile{
+	    left: 16px;
+	
+}#primaryMobileAdd{
+	position: absolute;
+    left: 67%;
+}#customerAddress{
+	    left: 119px;
+	
+}#customerCompany{
+	    left: 109px;
+	
+}.designEmailLabel{
+	position: relative;
+    left: 55px;
+}.designExtraEmail{
+	    left: 62px;
+	
+}.emailMinus{
+	    position: absolute;
+    left: 60%;
+}.designMobileLabel{
+	    position: relative;
+    left: 57px;
+}.designExtraMobile{
+	    left: 61px;
+	
+}.mobileMinus{
+	position: absolute;
+    left: 60%;
+}#customerCompanyDivShow{
+	    position: relative;
+    top: 79px;
+    left: 12px;
+}#customerAddressDivShow{
+	    position: relative;
+    top: 61px;
+    left: 14px;
+}#MobileContainerDetails{
+	    position: relative;
+    left: 14px;
+    top: 45px;
+}#EmailContainerDetails{
+	position: relative;
+    top: 21px;
+    left: 13px
+}#customerNameDivShow{
+	position: relative;
+    left: 12px;
+}#primaryMobileShow{
+	    position: relative;
+    left: 12px;
+}#primaryEmailShow{
+	    position: relative;
+    left: 20px;
+}#customerEmailDivShow{
+	    padding: 5px;
+	
+}#customerMobileDivShow{
+	    padding: 5px;
+	
+}.modal-footer{
+	    position: relative;
+    top: 23px;
+}#customerCompanyDiv{
+	position: relative;
+    top: 32px;
+}#customerAddressDiv{
+	position: relative;
+    top: 23px;
+
+}#MobileContainer{
+	    position: relative;
+    top: 13px;
+}#EmailContainer{
+	    position: relative;
+    top: 6px;
+}#customerFormHeader{
+	position: relative;
+    top: -17px;
+}#userIcon{
+    height: 101%;
+}#userIconHolder{
+	position: absolute;
+    left: 93%;
+    height: 96%;
+}.userIconPopup{
+	margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 220%;
+    position: absolute;
+    transition: all 5s ease-in-out;
+    top: 18%;
+    left: -120%;
+   	height: auto;
+    list-style-type: none;
+    box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+    border-top: none;
+}.userInfoLi{
+	position: relative;
+    padding: 10px;
+    font-size: medium;
+    cursor:pointer;
+}
+.userId{
+	font-family: serif;
+    font-size: 16px;
+    color: #4b2354;
+    line-height: 1.2;
+    display: block;
+    width: 71%;
+    height: 43px;
+    background: transparent;
+    padding: 0 20px 0 23px;
+    position: absolute;
+    top: 63px;
+    outline: none;
+    border: none;
+    margin: 23px;
+    border-radius: 25px;
+    -webkit-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+	
+}.errorMsg{
+	position: absolute;
+    top: -57px;
+    left: 108px;
+    font-size: 150%;
+    color: red;
+}#forgotPasswordButton{
+	
+	position:absolute;
+	top:215px;
+	left:86px;
+}#forgotPasswordHeader{
+	left : 30px;
+	color:blue;
+}.commonButtom{
+	
+	min-width: 192px;
+    height: 50px;
+    background: #f6f9f9;
+    border-radius: 25px;
+    font-family: SourceSansPro-SemiBold;
+    font-size: 14px;
+    color: black;
+    text-transform: uppercase;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    
+}.password{
+	font-family: serif;
+    font-size: 16px;
+    color: #4b2354;
+    line-height: 1.2;
+    display: block;
+    width: 71%;
+    height: 43px;
+    background: transparent;
+    padding: 0 20px 0 23px;
+    position: absolute;
+    top: 130px;
+    outline: none;
+    border: none;
+    margin: 23px;
+    border-radius: 25px;
+    -webkit-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+}

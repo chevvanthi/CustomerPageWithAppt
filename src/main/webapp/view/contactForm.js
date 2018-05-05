@@ -7,24 +7,25 @@ customerCollections = new customerCollection();
 var customerFormView = Backbone.View.extend({
 
 tagName 	   : "div",
-className	   : "contactForm modal-content",
+className	   : "contactForm modal-content popup",
 id			   :'contactFormView',
 events 		   : {
 
 					"click .close" : "removeForm",
-					"click #primaryPlus" : "EmailTemplate",
-					"click .emailMinus" : "removeTemplate",
-					"click #saveCustomerButton" : "saveCustomerDetails",
+					"click  #primaryPlus" : "EmailTemplate",
+					"click  .emailMinus" : "removeTemplate",
+					"click  #saveCustomerButton" : "saveCustomerDetails",
 					"click  #primaryMobileAdd" : "mobileTemplate",
-					"click .mobileMinus" :"removeTemplate",
+					"click  .mobileMinus" :"removeTemplate",
 					"change .lable" : "customLabelTemplate",
 					"click  #saveCustomValue" : "getNewValue",
-					"click #CancelCustomPopUp" : "RemovecustomLabelTemplate"
+					"click  #CancelCustomPopUp" : "RemovecustomLabelTemplate"
 				},	
 removeForm 		: function(){
 	
 					 console.log('remove form');
 					 $('#contactFormWrapper .contactForm').remove();
+						$("#customerPageContainer").removeClass("background_fade");
 
 					},
 					
@@ -70,23 +71,29 @@ mobileTemplate 		: function(){
 customLabelTemplate : function(){
 							 
 						    
-							 target = event.target;
+	 						selectTarget = event.target;
 							 var id = event.target.id;
-							 
+							
+					          
 							 		if($('#contactFormWrapper').has($("#customTemplateContainer")).length ==1) {
 									
 									return;								
 								}else{
-							 
-									 if(id=='EmailLabel'){
-										 var selected    = $('#EmailLabel').find(":selected").val();
-									 }else if(target.id='MobileLabel'){
-										 var selected    = $('#MobileLabel').find(":selected").val();
+									  
+									 if(id =='EmailLabel'){
+										 var selected    = selectTarget.selectedOptions[0].value;
+										 
+										 var optionSelected = $("option:selected", this);
+
+									 }else if(id='MobileLabel'){
+										 var selected    = selectTarget.selectedOptions[0].value;
 									 }
 									 
 									 if(selected == "customLable"){
-										 var customLabel =  _.template($('#customLabelTemplate').html());
-											$('#contactFormView').append(customLabel);
+										 $("#customerPageContainer").addClass("background_fade");
+										 	var customLabel = new customLabelTemplateView();
+											$('#customTemplate').append(customLabel.render().el);
+										
 									 }
 								}
 			
@@ -103,7 +110,6 @@ getNewValue			: function(event){
 								}
 								$('#customTemplateContainer').remove();
 
-										
 					},
 RemovecustomLabelTemplate : function(){
 								$('#contactFormWrapper #customTemplateContainer').remove();
@@ -117,17 +123,35 @@ saveCustomerDetails : function(){
 							var customerCompany  =  $('#customerCompany')
 							var string = "";
 							var randomId 		 =  string +Math.random()
-							 emailValues  = [];
-							var mobileValues = [];
+							var emailValues  	 = [];
+							var mobileValues 	 = [];
 							
-							var primaryEmail = $('#primaryEmail').val();
+							var primaryEmail =  $('#primaryEmail').val();
 							var primaryMobile = $('#primaryMobile').val();
+							
+							
+
+							
+							var validateEmail = function (email) {
+								
+								var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+								return re.test(email);
+							}
+							
+							var validateMobile = function(mobile){
+								var pattern =  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+								return pattern.test(mobile);
+							}
+							
+							
+							var additionalEmails = $('.additionalEmails input');
+							
 							
 							
 							if(customerName.val() == ""){
 			              	 	alert("please enter the name")
 			              	 	$('#customerName').focus();
-			              	 }else if(primaryEmail == ""){
+			              	 }else if(primaryEmail == "" ){
 			              	 	alert("please enter the email");
 			              	 	$('#primaryEmail').focus();
 
@@ -135,11 +159,20 @@ saveCustomerDetails : function(){
 			              	 	alert("please enter the mobile num");
 			              	 	$('#primaryMobile').focus();
 
-			              	 	}else{
-							
-							
-							var emailContainer=$(' #EmailContainer > #customerEmailDiv');
-							
+			              	 }else if(!validateEmail(primaryEmail)){
+			              		 alert("please enter the valid email address");
+			              		 $('#primaryEmail').focus();
+			              	 }else if(!validateMobile(primaryMobile)){
+			              		 alert("please enter the proper mobile number")
+				              	 	$('#primaryMobile').focus();
+
+			              	 }
+
+			              	 
+			              	 else{
+
+			    		   			
+							var emailContainer= $(' #EmailContainer > #customerEmailDiv');
 							
 							for(var i=0;i<emailContainer.length;i++){
 								
@@ -155,7 +188,42 @@ saveCustomerDetails : function(){
 								
 							}
 							
-							var mobileContainer = $('#MobileContainer > #customerMobileDiv');
+							var additionalEmailArray = [];
+	    					var additionalEmails =  $('#EmailContainer > .additionalEmails');
+
+							for(var i=0;i<additionalEmails.length;i++){
+								
+								var currentEmailDiv 	= 	additionalEmails[i];
+								var email           	= 	currentEmailDiv.querySelector('input').value;
+								var label           	= 	currentEmailDiv.querySelector('#EmailLabel');
+								var selectedEmailLablel = 	label.options[label.selectedIndex].text;
+								
+								additionalEmailArray.push({
+									label  : selectedEmailLablel,
+									email  : email
+								});
+								
+							
+							}
+
+							var additionalMobileArray = [];
+							var addtionalMobiles	  = $('#MobileContainer > .additionalMobiles');
+							
+							for(var i=0;i<addtionalMobiles.length;i++){
+								
+								var currentMobileDiv 	= 	addtionalMobiles[i];
+								var mobile           	= 	currentMobileDiv.querySelector('input').value;
+								var label           	= 	currentMobileDiv.querySelector('#MobileLabel');
+								var selectedMobileLablel = 	label.options[label.selectedIndex].text;
+								
+								additionalMobileArray.push({
+									label  : selectedMobileLablel,
+									mobile  : mobile
+								});
+						
+							}
+							
+							var mobileContainer =  $(' #MobileContainer > #customerMobileDiv');
 							
 							for(var i=0;i<mobileContainer.length;i++){
 								
@@ -170,7 +238,6 @@ saveCustomerDetails : function(){
 								});
 								
 							}		
-							
 							
   							
 							var customerDetails = {
@@ -190,7 +257,6 @@ saveCustomerDetails : function(){
 							
 							customerCollections.add(customerModel);
 							console.log(customerCollections);	
-							
 							var singleCustomerView = new customerNameView(customerModel);
 							$('#customerNamesContainer').append(singleCustomerView.render().el);
 							
@@ -200,55 +266,85 @@ saveCustomerDetails : function(){
 								   
 								   dataType :  "JSON",
 						    	   contentType:'application/json',
+						    	   
 						    	   success	:  function(model,xhr,option){
+						    		   			
 						    		   			console.log("success " + JSON.stringify(xhr));
 						    		   			alert("Contact Saved");
+												$("#customerPageContainer").removeClass("background_fade");
+
 						    		   			
 						    		   			var customerDetailsShow = new customerDetailsView(customerModel);
 						    		   			$('#customerDetailsContainer').html(customerDetailsShow.render().el);
 						    					
-						    		   			$('#customerName').val(customerDetails.customerName);
-						    					$('#customerAddress').val(customerDetails.customerAddress);
-						    					$('#customerCompany').val(customerDetails.customerCompany);
-						    					$('#primaryEmail').val(emailValues[0].email);
-						    					$('#primaryMobile').val(mobileValues[0].mobile);
+						    		   			$('#customerNameShow'). val(customerDetails.customerName);
+						    					$('#customerAddressShow').val(customerDetails.customerAddress);
+						    					$('#customerCompanyShow').val(customerDetails.customerCompany);
+						    					$('#primaryEmailShow'). val(emailValues[0].email);
+						    					$('#primaryMobileShow').val(mobileValues[0].mobile);
 						    					
-						    					if(emailValues.length >1){
+						    					
+						    					
+							    				var emailLabel = emailValues[0].label;
+							    				
+							    				if($("#EmailContainerDetails div:last")[0].querySelector('option[value="'+ emailLabel + '"]')!= null){
+							    				$("#EmailContainerDetails div:last")[0].querySelector('option[value="'+ emailLabel + '"]').setAttribute('selected','selected');		
+							    				}else {
+							    					$("#EmailContainerDetails div:last #EmailLabelShow").append($("<option  selected='selected' value = " +emailLabel+">"+emailLabel+"</option>"));
+							    				}
+							    				
+							    				var mobileLabel = mobileValues[0].label;
+
+							    				if($("#MobileContainerDetails div:last")[0].querySelector('option[value="'+ mobileLabel + '"]')!= null){
+								    				$("#MobileContainerDetails div:last")[0].querySelector('option[value="'+ mobileLabel + '"]').setAttribute('selected','selected');		
+								    				}else {
+								    					$("#MobileContainerDetails div:last #MobileLabelShow").append($("<option value = " + mobileLabel +">"+mobileLabel +"</option>")).attr('selected','selected');	
+								    				}
+						    					
+						    					
+						    					if(additionalEmailArray.length >= 1){
 						    						
-						    						$.each(emailValues,function(key,value){
-						    							
+						    						$.each(additionalEmailArray,function(key,value){
+						    							id++;
 						    							var label = value.label;
 						    							var email = value.email;
 						    							
 						    							var emailTemplate =  _.template($('#EmailTemplate').html());
-						    							$('#EmailContainer').append(emailTemplate);
-						    							$("#EmailContainer div:last input:last").attr('id', 'customerEmail' + id).val(email);
+						    							$('#EmailContainerDetails').append(emailTemplate);
+						    							$("#EmailContainerDetails div:last input:last").attr('id', 'customerEmail' + id).val(email);
 						    							
-						    							$('#EmailLabel' ).find("option[value=" + label + "]").attr('selected','selected')
-
-
+						    							 if($("#EmailContainerDetails div:last")[0].querySelector('option[value="'+ label + '"]')!= null){
+							    			    				$("#EmailContainerDetails div:last")[0].querySelector('option[value="'+ label + '"]').setAttribute('selected','selected');		
+							    			    				}else {
+							    			    					$("#EmailContainerDetails div:last #EmailLabel").append($("<option  selected='selected' value = " +label+">"+label+"</option>"));
+							    			    				}   
 
 						    						  });
-						    						$('#EmailContainer #customerEmailDiv').eq(1).remove();
 
 						    					}
 						    					
-							    				if(mobileValues.length > 1){
+							    				if(additionalMobileArray.length >= 1){
 						    						
-							    					$.each(mobileValues,function(key,value){
-						    							
+							    					$.each(additionalMobileArray,function(key,value){
+						    							id++;
 						    							var label = value.label;
-						    							var email = value.mobile;
+						    							var mobile = value.mobile;
 	
-					    							var emailTemplate =  _.template($('#EmailTemplate').html());
-					    							$('#MobileContainer').append(emailTemplate);
-					    							$("#MobileContainer div:last input:last").attr('id', 'customerMobile' + id).val(mobile);
+					    							var mobileTemplate =  _.template($('#mobileTemplate').html());
+					    							$('#MobileContainerDetails').append(mobileTemplate);
+					    							$("#MobileContainerDetails div:last input:last").attr('id', 'customerMobile' + id).val(mobile);
+					    							$("#MobileContainerDetails div:last")[0].querySelector('option[value="'+ label + '"]').setAttribute('selected','selected');						    							
+
+					    							if($("#MobileContainerDetails div:last")[0].querySelector('option[value="'+ label + '"]')!= null){
+					    			    				$("#MobileContainerDetails div:last")[0].querySelector('option[value="'+ label + '"]').setAttribute('selected','selected');		
+					    			    				}else {
+					    			    					$("#MobileContainerDetails div:last #MobileLabel").append($("<option  selected='selected' value = " +label+">"+label+"</option>"));
+					    			    				}   
 	
 					    						  });
-					    						$('#MobileContainer #customerMobileDiv').eq(1).remove();
 	
 							    				}
-
+							    				
 						    	   },
 						    	   error   : function(model,xhr,option){
 						    		   console.log("error " + JSON.stringify(xhr));
@@ -273,3 +369,57 @@ render          : function()
 			}
 
 });
+
+var userIconView = Backbone.View.extend({
+	
+className 	: 'userIconPopup modal-content',
+events	 	: {
+				"click  #logout" : "logoutFunction",
+				"click #forgotPasswordLink" : "forgotPasswordFunction",
+
+			},
+
+logoutFunction : function(){
+			console.log("logout clicked");
+			$.ajax({
+		
+				 url : "/logout",
+				success : function(value){
+					
+						console.log("session invalidated");
+		   				window.location.href ="/";
+		
+		   				customerCollection.reset();
+		
+						$('#customerPage').hide();
+		
+						},
+				failure : function(velue){
+					console.log("error while invalidating");
+			}
+		
+});
+	
+},
+forgotPasswordFunction : function(){
+						console.log('forgt cl');
+						var template     =  _.template($('#forgotPasswordTemplate').html());
+						$('#forgotPasswordContainer').html(template());
+	
+},
+template  	: _.template($('#userIconTemplate').html()),
+initialize 	: function(){
+				this.render();
+},
+render   : function(){
+	
+			var template     =  _.template($('#userIconTemplate').html());
+			this.$el.html(template({adminEmail:adminId}));
+			return this;
+}
+	
+});
+
+
+
+

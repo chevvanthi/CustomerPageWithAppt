@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import controller.CustomerCredentials;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.cmd.Query;
 
 @Controller
 public class ControllerClass {
@@ -154,8 +153,12 @@ public class ControllerClass {
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response  ) throws JSONException, JsonProcessingException{
 		
 		ModelAndView view = null;
-		if(request.getSession(false) !=null)
+		if(request.getSession(false) !=null){
 		 view = new ModelAndView("customerPage");
+		}else if(request.getSession().getAttribute("userName") == null){
+			 view = new ModelAndView("index");
+
+		}
 		else
 		 view = new ModelAndView("index");
 			
@@ -335,7 +338,7 @@ public String storeCustomers(@RequestBody String customerDetails,HttpServletRequ
 @RequestMapping(value="/deleteCustomer/{randomId:.+}")
 @ResponseBody
 public String deleteCustomer(@PathVariable String randomId,HttpServletRequest request){
-	System.out.println("insode the delete cusromer " + randomId);
+	System.out.println("inside the delete cusromer " + randomId);
 	
 	
 	ObjectMapper objMap  		  	 =   new ObjectMapper();
@@ -350,6 +353,45 @@ public String deleteCustomer(@PathVariable String randomId,HttpServletRequest re
 	return "deleted";
 }
 
+@RequestMapping(value="/retriveCustomer/{userName:.+}")
+@ResponseBody
+public String retriveCustomers(@PathVariable String userName,HttpServletRequest request ) throws JsonProcessingException{
 
+		System.out.println("inside the retrive customer");
+		ObjectMapper objMap  		  	 =   new ObjectMapper();
+		String result		 		   	 =   null;
+		String email;
+		HashMap<String,Object> map 	   	 =   new HashMap<>();
+		HttpSession session 			 =  request.getSession(false);
+
+		System.out.println("printing user name  " + userName);
+		ObjectifyService.register(customerDetailsPOJO.class);
+
+	 	Query<customerDetailsPOJO> cusDetails = (Query<customerDetailsPOJO>) ofy().load().type(customerDetailsPOJO.class).filter("adminId",userName);
+	 	
+//	 	
+//	 	if(cusDetails == null){
+//	 		 map.put("status", null);
+//	 		 result = objMap.writeValueAsString(map);
+//	 		 return result;
+//	 	}
+	 	
+	 	result = objMap.writeValueAsString(cusDetails);
+	 	System.out.println("customer details after fetching " + result);
+
+	 	return result;
+}
+@RequestMapping(value = "/logout")
+@ResponseBody
+public String logout(HttpServletRequest request){
+	HttpSession session = request.getSession(false);
+	if(session!=null){
+	session.invalidate();
+	return "sessionInvalidated";
+	}else{
+		return "sessionInvalidated";
+
+	}
+}
 	
 }

@@ -5,8 +5,8 @@ var customerDetailsModel = Backbone.Model.extend({
 				        customerName 	 : "",
 					    customerAddress  : "",
 					    customerCompany  : "",
-					    customerEmail    :"",
-					    customerMobile   :"",
+					    customerEmail    : "",
+					    customerMobile   : "",
 					    randomId 		 :  "",
 					    adminId			 : ""
 		   
@@ -22,6 +22,8 @@ var customerDetailsModel = Backbone.Model.extend({
 	  	        case 'create':
 	  	            return '/saveCustomerDetails';
 	  	            break;
+	  	        case  'read':
+	  	        	return '/retriveCustomer/'+this.id;
 	  	    }
 	  	},
 	  	sync: function (method, model, options) {
@@ -33,3 +35,10 @@ var customerDetailsModel = Backbone.Model.extend({
 
 		  
 }); 
+
+var retriveCustomerData = Backbone.Model.extend({
+	
+	idAttribute : "ID",
+	urlRoot : 	"/retriveCustomer"
+	
+});
