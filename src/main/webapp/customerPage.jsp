@@ -17,22 +17,26 @@ String userName = session.getAttribute("userName").toString();
 <title>customerPage</title>
 </head>
 <body >
-<div id='forgotPasswordContainer' class ='modal-content'></div>
+<div id='forgotPasswordContainer'></div>
 <div id = 'header'>
 <img src = '/image/book.jpeg' id='image'>
 <div id='name'>My Contacts</div>
 <button id ='addCustomer'  data-toggle="modal" class='btn btn-info btn-lg'>Add Contact</button>
+<button id='createEvent'> Create Event</button>
 <div id='userIconHolder'><img src = '/image/user.png' id='userIcon'></div>
- </div>
+
+
+</div>
 
 <div id	   ='customerPageContainer' class = ''>
  
 <div id    ='customerNamesContainer'> <h3 id='nameHeader'>Contact Names</h3> </div>
 <div id    ='customerDetailsContainer'></div>
 </div>
+
 <div id    ='contactFormWrapper'></div>
 <div id    = 'customTemplate'></div>
-
+<div id='createEventContainer'></div>
    
     <script type="text/html" id = "customerFormTemplate">
 		
@@ -148,19 +152,36 @@ String userName = session.getAttribute("userName").toString();
     
         <script type="text/html" id = "userIconTemplate">
 			<div  id='my_details' class ='userInfoLi'><@= adminEmail @> </div>
-			<div  id= 'forgotPasswordLink' class ='userInfoLi'>Forgot Password </div>
-			<div  id='logout' class = 'userInfoLi'>Logout</div>
+			<div  id='logout' class = 'userInfoLi'> <img src ='/image/signout.png' id='signoutIcon'>Logout</div>
     	</script>
     
     
     <script type ='text/html' id='forgotPasswordTemplate'>
 		<div id='forgotPasswordHeader' class='header'>ForgotPassword</div>
 
-		<input type='text'     id='forgotPassworduseId' placeholder='Email'         class='userId'>
-		<input type='password' id='newPassword'         placeholder=' New password' class='password'>
+		<input type='password'     id='newPassword'       placeholder='New password'         class='userId'>
+		<input type='password' id='retypePassword'         placeholder=' Retype password'    class='password'>
 		<button id='forgotPasswordButton' class='commonButtom'>CLICK</button>
 
     </script>
+        
+     <script type ='text/html' id='eventCreationTemplate'> 
+	
+	 <div id='EventNamediv'>Event Name <input type = 'text' id='eventName'></div>
+	 <div id='dateDiv'>Date: <input type="text" id="datepicker"></div>
+	 <div id='slotDiv'> slot size : <select id='slotSize'>
+           	<option value  ="15" >15 </option>
+            <option value = "30" > 30 </option>
+            <option value = "45" > 45 </option>
+            <option value = "60" > 60 </option>
+ 	</select> </div>
+
+	<div id='creatEventButtondiv'><button id='createEventButton'> Create </button> </div>
+	<div id='generateSlots'> </div>
+	
+
+	</script>
+    
     
     
     <script type ="text/javascript">
@@ -171,6 +192,12 @@ String userName = session.getAttribute("userName").toString();
     <script src ="./libs/jquery-3.2.1.min.js"></script>
     <script src ="./libs/underscore-min.js"></script>
     <script src ="./libs/backbone-min.js"></script>
+    
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    
     <script src ="./model/userCredentialsModel.js"></script>
     <script src = "./model/customerDetailsModel.js"></script>
     <script src = "./collection/customerCollection.js"></script>
@@ -178,7 +205,7 @@ String userName = session.getAttribute("userName").toString();
     <script src ="./view/customerNameView.js"></script>
     
     <script src ="./view/contactForm.js"></script>
-
+    <script src="./view/eventCreation.js"></script>
     <script src="./customerPage.js"></script>
  
     <link   rel="stylesheet" href="/newDesign.css">

@@ -405,6 +405,8 @@ forgotPasswordFunction : function(){
 						console.log('forgt cl');
 						var template     =  _.template($('#forgotPasswordTemplate').html());
 						$('#forgotPasswordContainer').html(template());
+						$("#customerPageContainer").addClass("background_fade");
+
 	
 },
 template  	: _.template($('#userIconTemplate').html()),

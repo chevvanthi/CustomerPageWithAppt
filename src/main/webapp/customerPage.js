@@ -172,7 +172,23 @@ $(document).ready(function(){
 		
 		
 	});
-	 
+	
+	function GetFormattedDate(date) {
+	   
+	    var month 	= 	date .getMonth() + 1;
+	    var day 	= 	date .getDate();
+	    var year	= 	date .getFullYear();
+	    return month + "/" + day + "/" + year;
+	} 
+	
+	
+	function hourAndMinuteFormat(hour,minute){
+		return hour +":"+minute;
+		
+		
+	}
+	
+	
 	 $('#userIcon').click(function(){
 		 
 		 if($('#userIconHolder').has($(".userIconPopup")).length ==1) {
@@ -185,5 +201,67 @@ $(document).ready(function(){
 		 }
 		 
 	 });
+	 
+	 
+	 $('#createEvent').click(function(){
+		
+		 if($('#createEventContainer').has($('.eventCreationDiv')).length ==1){
+			 console.log('no');
+		 }else{
+		 
+		 var eventCreationView = new eventCreate();
+		 $('#createEventContainer').append(eventCreationView.render().el);
+			 var defaultDate = new Date();
+			 var formatedDate = GetFormattedDate(defaultDate);
+			 $('#datepicker').datepicker().datepicker('setDate', formatedDate);
+			 
+			 
+			 var eventData = {
+						eventDate : $('#datepicker').val(),
+						slotDuration :$('#slotSize').val()
+				}
+	
+			$.ajax({
+				    url : "/generateSlots",
+				    contentType: "application/json",
+				    dataType	:"json",
+				    method 		: 'POST',
+					data 	 : JSON.stringify(eventData),
+					
+					success  : function(data){
+								
+								console.log("inside success");
+								data.forEach(function(entry) {
+									
+									var  hour 	= entry.hour;
+									var  minute	= entry.minute;
+								
+									var formattedTime = hourAndMinuteFormat(hour,minute);
+									var slot = $('<div></div>');
+									slot.addClass('timeSlot')
+									slot.text(formattedTime);
+									 $('#generateSlots').append(slot);
+								
+									
+								});
+								
+								
+								
+								
+								
+					},
+					error	: function(data){
+							console.log("inside error  " + data);
+					}
+				
+			});
+			 
+			 
+			 
+
+		 }
+		 
+	 });
+	 
 	
 });
